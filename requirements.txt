@@ -1,0 +1,10 @@
+PyMuPDF==1.24.13
+googletrans==3.1.0a0
+transformers==4.46.1
+fastapi==0.115.5
+pdf2docx==0.5.8
+torch==2.5.1
+tensorflow==2.18.0
+uvicorn==0.32.1
+python-multipart==0.0.17
+tf_keras==2.18.0
