@@ -9,3 +9,5 @@ uvicorn==0.32.1
 python-multipart==0.0.17
 tf_keras==2.18.0
 streamlit==1.40.0
+pytest==8.3.4
+langdetect==1.0.9
