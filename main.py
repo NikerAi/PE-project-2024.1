@@ -1,26 +1,48 @@
-from fastapi import FastAPI, UploadFile, File
-from fastapi.exceptions import HTTPException
-from fastapi.responses import FileResponse
-from code import main
+'''
+to start streamlit use:
+streamlit run streamlit_app.py
+
+to start fastapi use:
+uvicorn fastapi_app:app --reload
+
+streamlit will be availiable at
+http://localhost:8501/
+'''
+
+from transform import extract_data, remove_extra_text, text_partition, translation
+from os import listdir
+import pickle
 
 
-app = FastAPI(title="English articles processing")
+def write_in_pkl(filename, content):
+    with open(filename, 'wb') as f:
+        pickle.dump(content, f)
+
+def read_pkl(filename):
+    with open(filename, 'rb') as f:
+        tmp = pickle.load(f)
+    return tmp
 
 
-@app.get("/availability check")
-async def app_running():
-	return {"Status": "200 OK"}
+def create_files_unit_testing():
+    """
+    creates files for unit testing in 'tests/files_unit_testing' directory
+    based on processed pdf files in 'tests/files_pdf' directory
+    """
+    if len(listdir('tests/files_pdf')) == 0:
+        # raise exception if no pdf files were found
+        raise Exception("No pdf files found")
+
+    files_pdf = ['tests/files_pdf/' + file for file in listdir('tests/files_pdf')]
+    d = {}
+
+    d['en_text'], d['tables'], d['title'] = map(list, zip(*[extract_data(file) for file in files_pdf]))
+    d['cleared_en_text'] = [remove_extra_text(text, table) for text, table in zip(d['en_text'], d['tables'])]
+    d['split_en_text'] = [text_partition(cleared_en_t) for cleared_en_t in d['cleared_en_text']]
+    d['ru_text'] = [translation(split_en_t) for split_en_t in d['split_en_text']]
+
+    for key in list(d.keys()):
+        write_in_pkl(f'tests/files_unit_testing/{key}.pkl', d[key])
+    print('Unit testing files created successfully')
 
 
-@app.post("/pdf process")
-async def get_user_pdf(file: UploadFile = File(...)):
-	if file.filename[-3:] != "pdf":
-		raise HTTPException(415, detail="Unsupported Media Type. Please upload pdf file")
-	else:
-		pdf_path = f"Uploaded files/{file.filename}"
-		with open(pdf_path, "wb") as f:
-			content = await file.read()
-			f.write(content)
-		docx_path = main(pdf_path)
-		return FileResponse(path=docx_path, filename=file.filename.split(".")[0]+".docx",
-		                    media_type ="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
