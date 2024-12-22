@@ -15,6 +15,8 @@ st.write('''Обработка pdf документа может занять б
 
 # load file box
 uploaded_file = st.file_uploader("Загрузите статью...", type=["pdf"])
+summ = st.checkbox("Составить краткое содержание статьи на английском (summarization)?",
+                   value=True)
 
 if st.button('Translate'):
 
@@ -26,7 +28,7 @@ if st.button('Translate'):
         with st.spinner('Wait for it...'):
 
             # sending request to fastapi
-            response = requests.post(url="http://127.0.0.1:8000/pdf_process",
+            response = requests.post(url=f"http://127.0.0.1:8000/pdf_process/{int(summ)}",
                                      files={"file": uploaded_file.getvalue()})
 
         # show download button
