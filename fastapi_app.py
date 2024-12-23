@@ -7,7 +7,7 @@ from transform import main
 app = FastAPI(title="English articles processing")
 
 
-@app.get("/availability check")
+@app.get("/availability_check")
 async def app_running():
 	return {"Status": "200 OK"}
 
