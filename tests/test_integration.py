@@ -4,7 +4,7 @@ from langdetect import detect
 import transform
 
 # make list of all files in tests/files_pdf directory to parametrize testing
-files_pdf = ['files_pdf/' + file for file in listdir('files_pdf')]
+files_pdf = ['tests/files_pdf/' + file for file in listdir('tests/files_pdf')]
 
 
 @pytest.mark.parametrize('files', files_pdf)

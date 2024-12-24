@@ -2,6 +2,8 @@ import pytest
 import requests
 from os import listdir
 from concurrent.futures import ThreadPoolExecutor
+import transform
+
 
 def get_content(filename):
     with open(filename, "rb") as f:
@@ -15,7 +17,7 @@ def send_request(content):
 
 @pytest.fixture(scope='session')
 def parallel_status():
-    files_pdf = ['files_pdf/' + file for file in listdir('files_pdf')]
+    files_pdf = ['tests/files_pdf/' + file for file in listdir('tests/files_pdf')]
     MAX_THREADS = 4
 
     with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
@@ -23,7 +25,7 @@ def parallel_status():
 
     return stat
 
-ind = [i for i in range(len(['files_pdf/' + file for file in listdir('files_pdf')]))]
+ind = [i for i in range(len(['tests/files_pdf/' + file for file in listdir('tests/files_pdf')]))]
 
 
 

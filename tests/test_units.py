@@ -8,7 +8,7 @@ def read_pkl(filename):
         return pickle.load(f)
 
 # get the number of test samples to iterate through
-ind = [i for i in range(len(read_pkl('files_unit_testing/title.pkl')))]
+ind = [i for i in range(len(read_pkl('tests/files_unit_testing/title.pkl')))]
 
 
 @pytest.mark.parametrize('i', ind)
@@ -23,12 +23,12 @@ class TestUnit:
         fixture; loads all data required for testing
         """
         return {
-            'en_text': read_pkl('files_unit_testing/en_text.pkl'),
-            'tables': read_pkl('files_unit_testing/tables.pkl'),
-            'title': read_pkl('files_unit_testing/title.pkl'),
-            'cleared_en_text': read_pkl('files_unit_testing/cleared_en_text.pkl'),
-            'split_en_text': read_pkl('files_unit_testing/split_en_text.pkl'),
-            'ru_text': read_pkl('files_unit_testing/ru_text.pkl')
+            'en_text': read_pkl('tests/files_unit_testing/en_text.pkl'),
+            'tables': read_pkl('tests/files_unit_testing/tables.pkl'),
+            'title': read_pkl('tests/files_unit_testing/title.pkl'),
+            'cleared_en_text': read_pkl('tests/files_unit_testing/cleared_en_text.pkl'),
+            'split_en_text': read_pkl('tests/files_unit_testing/split_en_text.pkl'),
+            'ru_text': read_pkl('tests/files_unit_testing/ru_text.pkl')
         }
 
     @pytest.fixture

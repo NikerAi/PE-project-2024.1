@@ -1,14 +1,15 @@
 import pytest
 import pickle
-from transform import summarization
 from transformers import pipeline
+from transform import summarization
+
 
 def read_pkl(filename):
     with open(filename, 'rb') as f:
         return pickle.load(f)
 
 # get the number of test samples to iterate through
-ind = [i for i in range(len(read_pkl('files_unit_testing/split_en_text.pkl')))]
+ind = [i for i in range(len(read_pkl('tests/files_unit_testing/split_en_text.pkl')))]
 
 
 @pytest.mark.parametrize('i', ind)
@@ -22,7 +23,7 @@ class TestModelSum:
         """
         fixture; loads all data required for testing
         """
-        return read_pkl('files_unit_testing/split_en_text.pkl')
+        return read_pkl('tests/files_unit_testing/split_en_text.pkl')
 
     @pytest.fixture
     def data_ind(self, data, i):
